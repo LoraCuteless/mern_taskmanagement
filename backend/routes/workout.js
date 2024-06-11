@@ -7,7 +7,7 @@ router.get('/', (req, res)=>{
     res.json({mssg:'GET ALL'})
 })
 
-router.get("/id", (req, res) => {
+router.get("/:id", (req, res) => {
     res.json({mssg:'GET SPECIFIC'})
 });
 
@@ -23,4 +23,4 @@ router.patch("/:id", (req, res) => {
   res.json({ mssg: "UPDATE workout" });
 });
 
-modeule.exports = router
+module.exports = router
