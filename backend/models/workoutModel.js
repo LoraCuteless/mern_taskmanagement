@@ -1,4 +1,3 @@
-const { Timestamp } = require('mongodb')
 const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
@@ -18,3 +17,5 @@ const workoutSchema = new Schema({
         required: true
     }
 }, {timestamps:true})
+
+module.exports = mongoose.model('Workouts', workoutSchema)
