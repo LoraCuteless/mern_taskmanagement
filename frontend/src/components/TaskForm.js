@@ -1,6 +1,8 @@
 import { useState } from "react"
+import { useWorkoutsContext } from "../hooks/useWorkoutsContext"
 
 const TaskForm = () =>{
+    const {dispatch} = useWorkoutsContext()
     const [title, setTitle] = useState('')
     const [load,setLoad ] = useState('')
     const [reps, setReps] = useState('')
@@ -30,6 +32,7 @@ const TaskForm = () =>{
             setReps('')
             setError(null)
             console.log('new task added', json)
+            dispatch({type:'CREATE_WORKOUT',payload: json})
         }
     }
 

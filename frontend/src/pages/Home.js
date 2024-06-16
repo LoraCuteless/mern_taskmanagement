@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
+import { useWorkoutsContext } from "../hooks/useWorkoutsContext"
 
 import TaskForm from "../components/TaskForm"
 
 const Home =()=>{
-
-    const [workout, setWorkout] = useState(null)
+    const {workouts, dispatch} = useWorkoutsContext()
+    
 
     useEffect(()=>{
         const fetchWorks = async ()=>
@@ -13,7 +14,7 @@ const Home =()=>{
                 const json = await response.json()
 
                 if (response.ok){
-                    setWorkout(json)
+                    dispatch({type: 'SET_WORKOUTS', payload: json})
                 }
             }
         fetchWorks()
@@ -22,8 +23,8 @@ const Home =()=>{
     return(
         <div className="home">
             <div className="workouts">
-                {workout && workout.map((workouts)=>(
-                    <p key={workouts.id}>{workouts.title}</p>
+                {workouts && workouts.map((workout)=>(
+                    <p key={workout.id}>{workout.title}</p>
 
                 ))}
             </div>
