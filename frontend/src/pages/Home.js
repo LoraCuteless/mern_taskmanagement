@@ -1,20 +1,20 @@
 import { useEffect } from "react"
-import { useWorkoutsContext } from "../hooks/useWorkoutsContext"
+import { useTasksContext } from "../hooks/useTasksContext"
 
 import TaskForm from "../components/TaskForm"
 import TaskDetails from "../components/TaskDetails"
 
 const Home =()=>{
-    const {workouts, dispatch} = useWorkoutsContext()
+    const {tasks, dispatch} = useTasksContext()
     
     useEffect(()=>{
         const fetchWorks = async ()=>
             {
-                const response = await fetch('/api/workout')
+                const response = await fetch('/api/task')
                 const json = await response.json()
 
                 if (response.ok){
-                    dispatch({type: 'SET_WORKOUTS', payload: json})
+                    dispatch({type: 'SET_TASKS', payload: json})
                 }
             }
         fetchWorks()
@@ -22,9 +22,9 @@ const Home =()=>{
 
     return(
         <div className="home">
-            <div className="workouts">
-                {workouts && workouts.map((workout)=>(
-                    <TaskDetails key={workout._id} workout={workout}/>
+            <div className="tasks">
+                {tasks && tasks.map((task)=>(
+                    <TaskDetails key={task._id} task={task}/>
                 ))}
             </div>
             <TaskForm />
