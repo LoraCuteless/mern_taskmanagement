@@ -2,11 +2,11 @@ import { useEffect } from "react"
 import { useWorkoutsContext } from "../hooks/useWorkoutsContext"
 
 import TaskForm from "../components/TaskForm"
+import TaskDetails from "../components/TaskDetails"
 
 const Home =()=>{
     const {workouts, dispatch} = useWorkoutsContext()
     
-
     useEffect(()=>{
         const fetchWorks = async ()=>
             {
@@ -18,14 +18,13 @@ const Home =()=>{
                 }
             }
         fetchWorks()
-    },[])
+    },[dispatch])
 
     return(
         <div className="home">
             <div className="workouts">
                 {workouts && workouts.map((workout)=>(
-                    <p key={workout.id}>{workout.title}</p>
-
+                    <TaskDetails key={workout._id} workout={workout}/>
                 ))}
             </div>
             <TaskForm />
