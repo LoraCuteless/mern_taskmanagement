@@ -79,9 +79,7 @@ const updateTask = async(req, res)=>{
       return res.status(404).json({ error: "No such task exist" });
     }
 
-    const task = await Tasks.findOneAndUpdate({ _id: id },{
-        ...req.body
-    });
+    const task = await Tasks.findByIdAndUpdate(id, req.body, { new: true });
 
     if (!task) {
       return res.status(404).json({ error: "No such task exist" });
