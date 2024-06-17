@@ -1,7 +1,7 @@
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import { useTasksContext } from "../hooks/useTasksContext"
 
-const TaskForm = () =>{
+const TaskUpdateForm = ({task, onClose}) =>{
     const {dispatch} = useTasksContext()
     const [task_name, setTaskName] = useState('')
     const [task_details,setTaskDetails ] = useState('')
@@ -9,15 +9,23 @@ const TaskForm = () =>{
     const [error, setError] = useState(null)
     const [emptyFields, setEmptyFields] =useState([])
 
+    // Use useEffect to populate form fields when task changes
+    useEffect(() => {
+      if (task) {
+        setTaskName(task.task_name || ""); // Populate task_name with task.task_name if available
+        setTaskDetails(task.task_details || ""); // Populate task_details with task.task_details if available
+        setAssignedTo(task.assigned_to || ""); // Populate assigned_to with task.assigned_to if available
+      }
+    }, [task]); // Dependency array ensures useEffect runs when task prop changes
 
     const handleSubmit = async (e) =>{
         e.preventDefault()
 
-        const task = {task_name, task_details, assigned_to}
+        const updateTask = {task_name, task_details, assigned_to}
 
-        const response = await fetch('/api/task',{
-            method:'POST',
-            body: JSON.stringify(task),
+        const response = await fetch('/api/task/'+ task._id,{
+            method:'PATCH',
+            body: JSON.stringify(updateTask),
             headers: {
                 'Content-Type':'application/json'
             }
@@ -34,12 +42,22 @@ const TaskForm = () =>{
             setAssignedTo('')
             setError(null)
             console.log('new task added', json)
-            dispatch({type:'CREATE_TASKS',payload: json})
+            dispatch({type:'UPDATE_TASKS',payload: json})
+            onClose()
         }
     }
 
+    const handleCancel = () => {
+      // Reset form fields or perform any other necessary actions
+      setTaskName("")
+      setTaskDetails("")
+      setAssignedTo("")
+      setError(null)
+      onClose() // Close the form
+    };
+
     return (
-      <form className="create" onSubmit={handleSubmit}>
+      <form className="update" onSubmit={handleSubmit}>
         <h3>Add a New Task</h3>
         <label>Task Name:</label>
         <input
@@ -50,7 +68,7 @@ const TaskForm = () =>{
         />
 
         <label>Task details:</label>
-        <textarea
+        <textarea id="task_details"
           type="text"
           onChange={(e) => setTaskDetails(e.target.value)}
           value={task_details}
@@ -65,10 +83,12 @@ const TaskForm = () =>{
           className={emptyFields.includes('assigned_to')?'error':''}
         />
 
-        <button>Add Task</button>
+        <button type='submit'>Update Task</button>
+        <button type='button' onClick={handleCancel}
+        >Cancel</button>
         {error && <div className="error">{error}</div>}
       </form>
     );
 }
 
-export default TaskForm
+export default TaskUpdateForm
