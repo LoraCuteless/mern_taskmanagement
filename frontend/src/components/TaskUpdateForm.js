@@ -6,6 +6,7 @@ const TaskUpdateForm = ({task, onClose}) =>{
     const [task_name, setTaskName] = useState('')
     const [task_details,setTaskDetails ] = useState('')
     const [assigned_to, setAssignedTo] = useState('')
+    const [deadline, setDeadline] = useState('')
     const [error, setError] = useState(null)
     const [emptyFields, setEmptyFields] =useState([])
 
@@ -15,13 +16,14 @@ const TaskUpdateForm = ({task, onClose}) =>{
         setTaskName(task.task_name || ""); // Populate task_name with task.task_name if available
         setTaskDetails(task.task_details || ""); // Populate task_details with task.task_details if available
         setAssignedTo(task.assigned_to || ""); // Populate assigned_to with task.assigned_to if available
+        setDeadline(task.deadline || ""); // Populate assigned_to with task.assigned_to if available
       }
     }, [task]); // Dependency array ensures useEffect runs when task prop changes
 
     const handleSubmit = async (e) =>{
         e.preventDefault()
 
-        const updateTask = {task_name, task_details, assigned_to}
+        const updateTask = {task_name, task_details, assigned_to, deadline}
 
         const response = await fetch('/api/task/'+ task._id,{
             method:'PATCH',
@@ -40,6 +42,7 @@ const TaskUpdateForm = ({task, onClose}) =>{
             setTaskName('')
             setTaskDetails('')
             setAssignedTo('')
+            setDeadline('')
             setError(null)
             console.log('new task added', json)
             dispatch({type:'UPDATE_TASKS',payload: json})
@@ -52,13 +55,15 @@ const TaskUpdateForm = ({task, onClose}) =>{
       setTaskName("")
       setTaskDetails("")
       setAssignedTo("")
+      setDeadline("")
+
       setError(null)
       onClose() // Close the form
     };
 
     return (
       <form className="update" onSubmit={handleSubmit}>
-        <h3>Add a New Task</h3>
+        <h3>Update Task</h3>
         <label>Task Name:</label>
         <input
           type="text"
@@ -83,9 +88,19 @@ const TaskUpdateForm = ({task, onClose}) =>{
           className={emptyFields.includes('assigned_to')?'error':''}
         />
 
-        <button type='submit'>Update Task</button>
-        <button type='button' onClick={handleCancel}
-        >Cancel</button>
+        <label>Deadline:</label>
+        <input
+          type="date"
+          onChange={(e) => setDeadline(e.target.value)}
+          value={deadline}
+          className={emptyFields.includes('deadline')?'error':''}
+        />
+
+        <div id="container_button">
+          <button type='submit'>Update Task</button>
+          <button type='button' id="cancelTask" onClick={handleCancel}>Cancel</button>
+        </div>
+        
         {error && <div className="error">{error}</div>}
       </form>
     );

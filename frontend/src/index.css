@@ -111,3 +111,31 @@ div.error {
 input.error {
   border: 1px solid var(--error);
 }
+
+
+.update #task_details{
+  width: 100%;
+  height: 20%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.create #task_details{
+  width: 100%;
+  height: 20%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+#container_button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#container_button #cancelTask{
+  background-color: #e7195a;
+  color:#f1f1f1;
+}

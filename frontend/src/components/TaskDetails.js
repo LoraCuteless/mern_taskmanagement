@@ -2,8 +2,7 @@ import { useTasksContext } from "../hooks/useTasksContext"
 
 //Date Fns 
 //First Install npm install date-fns
-
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow, format } from 'date-fns';
 import TaskUpdateForm from "./TaskUpdateForm"; 
 import { useState } from "react";
 
@@ -38,6 +37,8 @@ const TaskDetails = ({ task }) => {
                     <h4>{task.task_name}</h4>
                     <p><strong>Task Details: </strong>{task.task_details}</p>
                     <p><strong>Task Assigned: </strong>{task.assigned_to}</p>
+                    <p><strong>Deadline: </strong>{format(new Date(task.deadline), 'MMMM d, yyyy')}</p>
+
                     <p>{formatDistanceToNow(new Date(task.createdAt), {addSuffix: true})}</p>
                     <button className='material-symbols-outlined' onClick={handleDelete} type='button' id='delete_button'>Delete</button>
                     <button className='material-symbols-rounded' onClick={handleEdit}type='button' id='edit_button'>Edit</button>

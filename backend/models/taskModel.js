@@ -15,6 +15,10 @@ const taskSchema = new Schema({
     assigned_to: {
         type: String,
         required: true
+    },
+    deadline: {
+        type: Date,
+        required:true
     }
 }, {timestamps:true})
 

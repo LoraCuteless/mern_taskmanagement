@@ -6,6 +6,7 @@ const TaskForm = () =>{
     const [task_name, setTaskName] = useState('')
     const [task_details,setTaskDetails ] = useState('')
     const [assigned_to, setAssignedTo] = useState('')
+    const [deadline, setDealine] = useState('')
     const [error, setError] = useState(null)
     const [emptyFields, setEmptyFields] =useState([])
 
@@ -13,7 +14,7 @@ const TaskForm = () =>{
     const handleSubmit = async (e) =>{
         e.preventDefault()
 
-        const task = {task_name, task_details, assigned_to}
+        const task = {task_name, task_details, assigned_to, deadline}
 
         const response = await fetch('/api/task',{
             method:'POST',
@@ -32,6 +33,7 @@ const TaskForm = () =>{
             setTaskName('')
             setTaskDetails('')
             setAssignedTo('')
+            setDealine('')
             setError(null)
             console.log('new task added', json)
             dispatch({type:'CREATE_TASKS',payload: json})
@@ -50,7 +52,7 @@ const TaskForm = () =>{
         />
 
         <label>Task details:</label>
-        <textarea
+        <textarea id="task_details"
           type="text"
           onChange={(e) => setTaskDetails(e.target.value)}
           value={task_details}
@@ -64,6 +66,15 @@ const TaskForm = () =>{
           value={assigned_to}
           className={emptyFields.includes('assigned_to')?'error':''}
         />
+
+        <label>Deadline:</label>
+        <input
+          type="date"
+          onChange={(e) => setDealine(e.target.value)}
+          value={deadline}
+          className={emptyFields.includes('deadline')?'error':''}
+        />
+
 
         <button>Add Task</button>
         {error && <div className="error">{error}</div>}

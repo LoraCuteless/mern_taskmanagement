@@ -28,7 +28,7 @@ const getTask = async(req, res)=>{
 
 //create workout
 const createTask = async (req, res)=>{
-    const { task_name, task_details, assigned_to } = req.body;
+    const { task_name, task_details, assigned_to,deadline } = req.body;
 
     let emptyFields = []
 
@@ -43,12 +43,16 @@ const createTask = async (req, res)=>{
     if(!assigned_to){
       emptyFields.push('assigned_to')
     }
+
+    if(!deadline){
+      emptyFields.push('deadline')
+    }
     if(emptyFields.length > 0){
       return res.status(400).json({error: "Please Fill in all the fields", emptyFields})
     }
 
     try {
-      const task = await Tasks.create({ task_name, task_details, assigned_to });
+      const task = await Tasks.create({ task_name, task_details, assigned_to,deadline });
       res.status(200).json(task);
     } catch (error) {
       res.status(400).json({ error: error.message });
